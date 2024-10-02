@@ -2,7 +2,7 @@ class Tours {
   int tour_id;
   String tour_name;
   String image;
-  String time;
+  int time;
   String destination;
   String schedule;
   String nation;

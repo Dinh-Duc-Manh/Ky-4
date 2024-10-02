@@ -17,7 +17,7 @@ class DetailTourScreen extends StatefulWidget {
 class _DetailTourScreenState extends State<DetailTourScreen> {
   late TourService service;
   Tours tour =
-      Tours(0, "", "", "", "", "", "", 0); // Initialize with default values
+      Tours(0, "", "", 0, "", "", "", 0); // Initialize with default values
 
   getTour() async {
     service = TourService(await getDatabase());
@@ -48,7 +48,7 @@ class _DetailTourScreenState extends State<DetailTourScreen> {
               _buildInfoRow('Tour code', '${tour.tour_id}'),
               _buildInfoRow('Tour name', tour.tour_name),
               _buildImageSection(tour.image),
-              _buildInfoRow('Tour Time', tour.time),
+              _buildInfoRow('Tour Time', '${tour.time}'),
               _buildMultilineInfoRow('Destination', tour.destination),
               _buildMultilineInfoRow('Schedule', tour.schedule),
               _buildInfoRow('Nation', tour.nation),

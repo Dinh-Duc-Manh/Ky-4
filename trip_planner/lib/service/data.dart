@@ -12,7 +12,7 @@ Future<Database> getDatabase() async {
           'tour_id INTEGER PRIMARY KEY AUTOINCREMENT,'
           'tour_name TEXT NOT NULL, '
           'image TEXT, '
-          'time TEXT, '
+          'time INTEGER, '
           'destination TEXT, '
           'schedule TEXT, '
           'nation TEXT, '
@@ -60,7 +60,7 @@ Future<Database> getDatabase() async {
         'user_name': 'admin',
         'avatar': 'admin.jpg',
         'email': 'manhk5528@gmail.com',
-        'password_hash': 'ad1234',
+        'password_hash': '123456',
         'full_name': 'Quản trị viên',
         'role': 'admin',
         'status': 'validity',
@@ -70,7 +70,7 @@ Future<Database> getDatabase() async {
         'user_name': 'user1',
         'avatar': 'user1.jpg',
         'email': 'user1@gmail.com',
-        'password_hash': 'u12345',
+        'password_hash': '123456',
         'full_name': 'Người dùng 1',
         'role': 'user',
         'status': 'validity',
@@ -80,7 +80,7 @@ Future<Database> getDatabase() async {
         'user_name': 'user2',
         'avatar': 'user2.jpg',
         'email': 'user2@gmail.com',
-        'password_hash': 'u12345',
+        'password_hash': '123456',
         'full_name': 'Người dùng 2',
         'role': 'user',
         'status': 'locked',
@@ -90,7 +90,7 @@ Future<Database> getDatabase() async {
         'tour_id': 6,
         'tour_name': 'Shanghai - Suzhou - Wuzhen - Hangzhou',
         'image': 'china2.jpg',
-        'time': '4',
+        'time': 4,
         'destination':
         'Discover the poetic beauty and rich history of the Jiangnan region with a 4-day, 3-night tour through the famous cities of Shanghai, Suzhou, Hangzhou and the ancient town of Wuzhen. Enjoy the perfect combination of modern and ancient beauty of Shanghai, stroll along the cobblestone streets and explore traditional gardens in Suzhou, admire the poetic beauty of West Lake in Hangzhou and experience the peaceful, ancient space of Wuzhen. Explore with iVIVU today!',
         'schedule': 'DAY 1: HO CHI MINH CITY - SHANGHAI (Light dinner on the plane) \n'
@@ -128,7 +128,7 @@ Future<Database> getDatabase() async {
         'tour_id': 7,
         'tour_name': 'HCM - Seoul - Everland Park - Nami Island in Autumn',
         'image': 'hanquoc2.jpg',
-        'time': '5',
+        'time': 5,
         'destination':
         'Discover Korea starting from Seoul with a visit to Nami Island, famous for the movie "Winter Sonata", and continuing to Gwanghwamun Square and the poetic Cheonggyecheon Stream. Visitors will experience an exciting day at Everland Park, one of the largest amusement parks in Asia. Continue with a visit to Namsan Tower, Gyeongbok Palace, and the Blue House, which preserves many cultural and historical values ​​of Korea. In particular, you will participate in a Kimchi making class, wear traditional Hanbok costumes, and enjoy the unique art performance Paintner Show. The journey ends with a visit to the traditional craft village of Bukchon Hanok and shopping in Seoul before returning to Vietnam.',
         'schedule': 'Day 01: HCMC - SEOUL (Overnight on plane) \n'
@@ -163,7 +163,7 @@ Future<Database> getDatabase() async {
         'tour_id': 8,
         'tour_name': 'Korea Tour 5N5D: Busan - Daegu - Seoul',
         'image': 'hanquoc3.jpg',
-        'time': '5',
+        'time': 5,
         'destination':
         'Explore the 5-day, 4-night tour program in Korea that takes you to the highlights of Busan, Daegu, Seoul, and Nami Island. Explore theme parks, cultural villages, royal palaces, and beautiful natural landscapes. Visitors will have the opportunity to experience Korean culture through activities such as making kimchi, wearing traditional Hanbok, and enjoying rich local cuisine. The program also includes shopping experiences and enjoying the vibrant nightlife.',
         'schedule': 'Day 01: HO CHI MINH CITY - BUSAN (OVERNIGHT ON PLANE) \n'
@@ -207,7 +207,7 @@ Future<Database> getDatabase() async {
         'tour_name':
         'Yichang - Zhangjiajie - Tianmen Mountain - Phoenix Ancient Town',
         'image': 'china3.jpg',
-        'time': '5',
+        'time': 5,
         'destination':
         "Explore China 6 days 5 nights with a journey through the Three Gorges Dam, Phoenix Ancient Town, Zhangjiajie and Yichang. Visit the Three Gorges Dam, the world's largest hydroelectric project, and admire the majestic landscape. Explore Phoenix Ancient Town with its ancient streets, poetic Tuojiang River and traditional architecture. Continue to Zhangjiajie, explore the national park with towering stone pillars and beautiful nature, famous through the movie Avatar. Visit Yichang, enjoy the scenery of the Yangtze River and experience rich local cuisine. Ideal tour for families and travelers who want to enjoy the beauty of China's nature and culture.",
         'schedule': 'DAY 1: HO CHI MINH CITY - YI CHANG, HUBAE (Meals on the plane) \n'
@@ -268,7 +268,7 @@ Future<Database> getDatabase() async {
         'tour_id': 10,
         'tour_name': 'HCM - Da Nang - Hoi An - Hue - Quang Binh',
         'image': 'vietnam2.jpg',
-        'time': '4',
+        'time': 4,
         'destination':
         'Discover Da Nang 4D3N takes visitors to explore the quintessence of Central Vietnam through attractive destinations such as Da Nang, Hoi An, Hue and Quang Binh. The journey promises an unforgettable experience with the majestic scenery of Son Tra Peninsula, the ancient beauty of Hoi An ancient town, the majesty of Hue citadel and the magnificence of Phong Nha cave. This is the perfect choice to explore cultural heritage while enjoying the beautiful nature and unique cuisine of this land.',
         'schedule': 'DAY 1: Da Nang - SON TRA PENINSULA - HOI AN ANCIENT TOWN (Lunch) \n'
@@ -308,7 +308,7 @@ Future<Database> getDatabase() async {
         'tour_id': 11,
         'tour_name': 'HCM - Hanoi - Sapa - Lao Cai - Ninh Binh - Ha Long',
         'image': 'vietnam3.jpg',
-        'time': '5',
+        'time': 5,
         'destination':
         'Discover the beauty of Northern Vietnam on a 5-day, 4-night journey, departing from Ho Chi Minh City. Starting in Hanoi, visitors will visit the Temple of Literature, Hoan Kiem Lake and the Old Quarter. Continue to Sapa, admire the Northwest mountains and forests, visit Cat Cat village and conquer Fansipan peak. Then, the journey takes visitors to Lao Cai, explore the beauty of the border and local culture. Next, to Ninh Binh, visitors visit Trang An and Bai Dinh Pagoda, enjoy the majestic natural scenery. Finally, the journey ends in Ha Long with a cruise to see thousands of beautiful rocky islands in the bay. This trip brings unforgettable experiences and memories.',
         'schedule': 'Day 1: Ho Chi Minh - Hanoi - Sapa (Lunch, dinner) \n'
@@ -354,7 +354,7 @@ Future<Database> getDatabase() async {
         'tour_name':
         'Singapore - Malaysia Tour 5N4D: HCM - Merlion Park - Marina Bay - Gardens By The Bay - Chen Hoon Temple - Putra Jaya',
         'image': 'singapore2.jpg',
-        'time': '5 days',
+        'time': 5,
         'destination':
         'Explore Singapore and Malaysia 5 days 4 nights from Ho Chi Minh City, visit Merlion Park, Marina Bay and Gardens by the Bay in Singapore. Experience diverse cultures in Chinatown, Little India and enjoy local cuisine. Continue the journey to Malaysia, explore Chen Hoon Temple, modern city of Putra Jaya and famous spots in Kuala Lumpur. Enjoy shopping at bustling shopping centers. Perfect tour for families and travelers who love exploring, shopping and experiencing culture.',
         'schedule': 'DAY 01: HO CHI MINH CITY - SINGAPORE (Breakfast, light lunch, dinner) \n'
@@ -409,7 +409,7 @@ Future<Database> getDatabase() async {
         'tour_name':
         'Singapore Tour 3N2D: Explore Lion Island - Gardens By The Bay - Buddha Tooth Relic Temple',
         'image': 'singapore3.jpg',
-        'time': '3 days',
+        'time': 3,
         'destination':
         'Experience a 3-day, 2-night journey to explore the Lion Island, with highlights such as Gardens by the Bay, Buddha Tooth Relic Temple and many other landmarks. Enjoy the modern beauty of Singapore at Gardens by the Bay with impressive supertrees and Flower Dome. Visit Buddha Tooth Relic Temple, a famous Buddhist temple with magnificent architecture and precious relics. Explore other attractive destinations such as Marina Bay Sands, Merlion Park and Orchard shopping district.',
         'schedule': 'DAY 1: HO CHI MINH CITY - SINGAPORE - CITY TOUR (Breakfast on plane, Light lunch, Dinner) \n'
@@ -444,7 +444,7 @@ Future<Database> getDatabase() async {
         'tour_name':
         'Japan Tour 5N5D: Golden Route Osaka - Kyoto - Tokyo Autumn',
         'image': 'japan3.jpg',
-        'time': '5 days',
+        'time': 5,
         'destination':
         'Experience a 5-day, 5-night journey on the golden route from Osaka, Kyoto to Tokyo, exploring Japan is famous and attractive destinations. Start in Osaka, a vibrant city with bustling shopping areas and rich street food. Continue to Kyoto, a place that preserves ancient beauty with temples, shrines and traditional gardens. The journey ends in Tokyo, a modern and vibrant capital, where you can admire skyscrapers, visit fashion districts and experience unique culture. This trip promises to bring you memorable memories and wonderful experiences of the land of cherry blossoms.',
         'schedule': 'Day 01: SAIGON - KANSAI (OVERNIGHT ON PLANE) \n'
@@ -479,7 +479,7 @@ Future<Database> getDatabase() async {
         'tour_name':
         'Japan Tour 4N4D: Ho Chi Minh City - Red Leaf Season Narita - Yamanashi - Tokyo',
         'image': 'tourjap1.jpg',
-        'time': '5 days',
+        'time': 5,
         'destination':
         'Explore the brilliant red leaves season in Narita, Yamanashi and Tokyo on a 4-day, 4-night Japan tour departing from Ho Chi Minh City. Experience the majestic scenery of Mount Fuji, immerse yourself in the poetic space of Lake Kawaguchi, and enjoy shopping in the bustling Shinjuku district. With a streamlined itinerary and simple visa procedures, this tour promises to bring visitors wonderful experiences of Japanese nature, culture and cuisine.',
         'schedule': 'Day 01: HO CHI MINH CITY - NARITA \n'

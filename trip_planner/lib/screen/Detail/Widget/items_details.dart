@@ -61,7 +61,7 @@ class ItemsDetails extends StatelessWidget {
                       width: 3,
                     ),
                     Text(
-                      tour.time,
+                      "${tour.time} Days",
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.grey,

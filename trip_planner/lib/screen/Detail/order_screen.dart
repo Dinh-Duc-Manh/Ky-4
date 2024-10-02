@@ -35,7 +35,7 @@ class _OrderScreenState extends State<OrderScreen> {
       setState(() {
         _startDate = pickedDate;
         // Automatically calculate the end date based on the tour time
-        _endDate = _startDate!.add(Duration(days: int.parse(widget.tour.time)));
+        _endDate = _startDate!.add(Duration(days: widget.tour.time));
       });
     }
   }

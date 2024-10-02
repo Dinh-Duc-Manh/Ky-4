@@ -171,7 +171,7 @@ class _AddTourFormScreenState extends State<AddTourFormScreen> {
                             -1, // Temporary ID
                             _tourNameController.text,
                             _image!.path,
-                            _timeController.text,
+                            _timeController.text as int,
                             _destinationController.text,
                             _scheduleController.text,
                             _selectedNation!,

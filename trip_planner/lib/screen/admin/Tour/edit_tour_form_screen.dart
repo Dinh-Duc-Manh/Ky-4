@@ -45,7 +45,7 @@ class _EditTourFormScreenState extends State<EditTourFormScreen> {
     Tours tour = await service.getById(widget.tourId);
     setState(() {
       _tourNameController.text = tour.tour_name;
-      _timeController.text = tour.time;
+      _timeController.text = tour.time.toString();
       _destinationController.text = tour.destination;
       _scheduleController.text = tour.schedule;
       _selectedNation = tour.nation;
@@ -182,7 +182,7 @@ class _EditTourFormScreenState extends State<EditTourFormScreen> {
                             widget.tourId,
                             _tourNameController.text,
                             imagePath,
-                            _timeController.text,
+                            _timeController.text as int,
                             _destinationController.text,
                             _scheduleController.text,
                             _selectedNation!,
