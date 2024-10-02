@@ -85,6 +85,7 @@ class _AddTourFormScreenState extends State<AddTourFormScreen> {
                   controller: _timeController,
                   decoration:
                       InputDecoration(labelText: 'Enter Tour Time here'),
+                  keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter Tour Time, cannot be left blank';
@@ -171,7 +172,7 @@ class _AddTourFormScreenState extends State<AddTourFormScreen> {
                             -1, // Temporary ID
                             _tourNameController.text,
                             _image!.path,
-                            _timeController.text as int,
+                            int.parse(_timeController.text),
                             _destinationController.text,
                             _scheduleController.text,
                             _selectedNation!,
@@ -199,8 +200,9 @@ class _AddTourFormScreenState extends State<AddTourFormScreen> {
                           _selectedNation = null;
                         });
                       } else if (_image == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Please select tour photo, cannot be left blank')));
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(
+                                'Please select tour photo, cannot be left blank')));
                       }
                     },
                     child: Text('Save'),
