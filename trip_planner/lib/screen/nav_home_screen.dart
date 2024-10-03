@@ -28,7 +28,7 @@ class _NavHomeScreenState extends State<NavHomeScreen> {
       TripScreen(user: widget.user),  // Pass the user here
       HomeScreen(user: widget.user),
       const AboutUs(),
-      ProfileScreen(user: widget.user),
+      ProfileScreen(userId: widget.user.user_id!),
     ];
   }
 
