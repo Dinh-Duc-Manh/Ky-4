@@ -51,7 +51,7 @@ class ItemsDetails extends StatelessWidget {
                         fontSize: 15,
                       ),
                     ),
-                    const SizedBox(width: 25),
+                    const SizedBox(width: 50),
                     const Icon(
                       Icons.watch_later_outlined,
                       color: Colors.grey,
@@ -68,7 +68,7 @@ class ItemsDetails extends StatelessWidget {
                         fontSize: 15,
                       ),
                     ),
-                    const SizedBox(width: 25),
+                    const SizedBox(width: 50),
                     Text(
                       "Vehicle: ",
                       style: const TextStyle(

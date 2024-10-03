@@ -37,6 +37,7 @@ Future<Database> getDatabase() async {
           'end_date TEXT,'
           'destination TEXT,'
           'total_price REAL,'
+          'status TEXT DEFAULT "Waiting for confirmation",'
           'tour_id INTEGER,'
           'user_id INTEGER,'
           'FOREIGN KEY(tour_id) REFERENCES tours(tour_id) ON DELETE CASCADE,'
@@ -52,6 +53,14 @@ Future<Database> getDatabase() async {
           'expense_date TEXT NOT NULL, '
           'notes TEXT, '
           'FOREIGN KEY(trip_id) REFERENCES trips(trip_id) ON DELETE CASCADE, '
+          'FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE '
+          ')');
+//
+      await db.execute('CREATE TABLE IF NOT EXISTS favorite ('
+          'favorite_id INTEGER PRIMARY KEY AUTOINCREMENT, '
+          'tour_id INTEGER, '
+          'user_id INTEGER NOT NULL, '
+          'FOREIGN KEY(tour_id) REFERENCES tours(tour_id) ON DELETE CASCADE,'
           'FOREIGN KEY(user_id) REFERENCES users(user_id) ON DELETE CASCADE '
           ')');
 //

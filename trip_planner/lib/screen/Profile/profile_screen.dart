@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../model/Users.dart';
 import '../Login/sign_in_screen.dart';
+import '../Trip/trip_screen.dart';
+import 'detail_profile_screen.dart';
 import 'edit_profile_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -26,9 +28,25 @@ class ProfileScreen extends StatelessWidget {
       MaterialPageRoute(
         builder: (context) => EditProfileScreen(user.user_id!),
       ),
-    ).then((_) {
-      ProfileScreen;
-    });
+    );
+  }
+
+  void _trip(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TripScreen(user: user),
+      ),
+    );
+  }
+
+  void _detailProfile(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DetailProfileScreen(user.user_id!),
+      ),
+    );
   }
 
   ImageProvider _buildImage(String imagePath) {
@@ -78,10 +96,26 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Text('Personal Information', style: titleStyle),
             const SizedBox(height: 16),
-            Text('Email: ${user.email}', style: infoStyle),
-            Text('Account Code: ${user.user_id}', style: infoStyle),
-            Text('Account Status: ${user.status}', style: infoStyle),
-            Text('Account Type: ${user.role}', style: infoStyle),
+            GestureDetector(
+              onTap: () => _detailProfile(context),
+              child: _buildRow('Thông tin người dùng', context),
+            ),
+            const SizedBox(height: 16),
+            _buildRow('Lịch sử yêu thích', context),
+            const SizedBox(height: 16),
+            GestureDetector(
+              onTap: () => _trip(context),
+              child: _buildRow('Lịch sử đặt chuyến', context),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text('Phiên bản', style: infoStyle),
+                const Spacer(), // This takes the remaining space
+                Text('0.1', style: infoStyle),
+              ],
+            ),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () => _logout(context),
@@ -90,6 +124,16 @@ class ProfileScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildRow(String title, BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(title, style: const TextStyle(fontSize: 16)),
+        Text('>', style: const TextStyle(fontSize: 16)),
+      ],
     );
   }
 }
