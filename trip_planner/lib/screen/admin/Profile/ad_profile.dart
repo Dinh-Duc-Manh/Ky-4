@@ -51,10 +51,12 @@ class AdProfile extends StatelessWidget {
             SizedBox(height: 16),
             Text('Personal information', style: titleStyle),
             SizedBox(height: 16),
-            Text('Email: ${user.email}', style: infoStyle),
-            Text('Account code: ${user.user_id}', style: infoStyle),
-            Text('Account Status: ${user.status}', style: infoStyle),
-            Text('Account Type: ${user.role}', style: infoStyle),
+            _buildInfoRow('User ID', '${user.user_id}'),
+            _buildInfoRow('Full Name', user.full_name),
+            _buildInfoRow('Username', user.user_name),
+            _buildInfoRow('Email', user.email),
+            _buildInfoRow('Role', user.role),
+            _buildInfoRow('Status', user.status),
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () => _logout(context),
@@ -62,6 +64,27 @@ class AdProfile extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 100,
+            child: Text(
+              label,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+          Expanded(
+            child: Text(value),
+          ),
+        ],
       ),
     );
   }

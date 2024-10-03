@@ -88,7 +88,7 @@ class _DetailProfileScreenState extends State<DetailProfileScreen> {
     );
   }
 
-  Widget _buildAvatarSection(String avatarPath) {
+  Widget _buildAvatarSection(String imagePath) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: Center(
@@ -96,9 +96,9 @@ class _DetailProfileScreenState extends State<DetailProfileScreen> {
           children: [
             CircleAvatar(
               radius: 60,
-              backgroundImage: avatarPath.startsWith('/data/')
-                  ? FileImage(File(avatarPath))
-                  : AssetImage("assets/images/avatars/$avatarPath") as ImageProvider,
+              backgroundImage: imagePath.startsWith('/data/')
+                  ? FileImage(File(imagePath))
+                  : AssetImage("assets/images/users/$imagePath") as ImageProvider,
               onBackgroundImageError: (exception, stackTrace) {
                 print('Error loading avatar: $exception');
               },
