@@ -22,7 +22,6 @@ class AdProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextStyle titleStyle =
         TextStyle(fontSize: 24, fontWeight: FontWeight.bold);
-    final TextStyle infoStyle = TextStyle(fontSize: 16);
 
     return Scaffold(
       appBar: AppBar(

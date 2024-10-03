@@ -182,7 +182,7 @@ class _EditTourFormScreenState extends State<EditTourFormScreen> {
                             widget.tourId,
                             _tourNameController.text,
                             imagePath,
-                            _timeController.text as int,
+                            int.parse(_timeController.text),
                             _destinationController.text,
                             _scheduleController.text,
                             _selectedNation!,

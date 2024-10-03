@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import '../../../model/Users.dart';
 import '../../../service/data.dart';
 import '../../../service/user_service.dart';
+import 'edit_profile_screen.dart';
 
 class DetailProfileScreen extends StatefulWidget {
   final int userId;
+
   DetailProfileScreen(this.userId);
 
   @override
@@ -25,20 +27,34 @@ class _DetailProfileScreenState extends State<DetailProfileScreen> {
     avatar: "",
     role: "",
     status: "",
-  ); // Initialize with default values
+  );
 
-  getUser() async {
-    service = UserService(await getDatabase());
-    var data = await service.getById(widget.userId);
-    setState(() {
-      user = data!;
-    });
+  // Loading state
+  bool isLoading = true;
+
+  Future<void> getUser() async {
+    try {
+      service = UserService(await getDatabase());
+      var data = await service.getById(widget.userId);
+      if (data != null) {
+        setState(() {
+          user = data;
+          isLoading = false; // Set loading to false after data is loaded
+        });
+      }
+    } catch (e) {
+      // Handle error
+      print('Error fetching user data: $e');
+      setState(() {
+        isLoading = false; // Also set loading to false in case of error
+      });
+    }
   }
 
   @override
   void initState() {
-    getUser();
     super.initState();
+    getUser();
   }
 
   @override
@@ -46,8 +62,16 @@ class _DetailProfileScreenState extends State<DetailProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("User Profile"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () => _editProfile(context),
+          ),
+        ],
       ),
-      body: SingleChildScrollView(
+      body: isLoading
+          ? Center(child: CircularProgressIndicator()) // Show loading spinner
+          : SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.all(16),
           child: Column(
@@ -65,6 +89,17 @@ class _DetailProfileScreenState extends State<DetailProfileScreen> {
         ),
       ),
     );
+  }
+
+  void _editProfile(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditProfileScreen(widget.userId),
+      ),
+    ).then((_) {
+      getUser();
+    });;
   }
 
   Widget _buildInfoRow(String label, String value) {

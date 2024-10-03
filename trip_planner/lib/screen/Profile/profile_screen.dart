@@ -6,7 +6,6 @@ import '../../../model/Users.dart';
 import '../Login/sign_in_screen.dart';
 import '../Trip/trip_screen.dart';
 import 'detail_profile_screen.dart';
-import 'edit_profile_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   final Users user;
@@ -18,15 +17,6 @@ class ProfileScreen extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (context) => SignInScreen(),
-      ),
-    );
-  }
-
-  void _editProfile(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => EditProfileScreen(user.user_id!),
       ),
     );
   }
@@ -74,20 +64,14 @@ class ProfileScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                GestureDetector(
-                  onTap: () => _editProfile(context),
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundImage: _buildImage(user.avatar),
-                  ),
+                CircleAvatar(
+                  radius: 50,
+                  backgroundImage: _buildImage(user.avatar),
                 ),
                 const SizedBox(width: 16),
-                GestureDetector(
-                  onTap: () => _editProfile(context),
-                  child: Text(
-                    user.full_name,
-                    style: titleStyle,
-                  ),
+                Text(
+                  user.full_name,
+                  style: titleStyle,
                 ),
               ],
             ),

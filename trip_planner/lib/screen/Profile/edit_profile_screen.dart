@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../../model/Users.dart';
 import '../../../service/User_Service.dart';
 import '../../../service/data.dart';
-import '../Login/sign_in_screen.dart';
+import 'detail_profile_screen.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final int userId;
@@ -132,12 +132,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           await service.update(updatedUser);
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text('User updated successfully!')));
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SignInScreen(),
-                            ),
-                          );
+                          Navigator.pop(context);
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text('Failed to update user: $e')));
