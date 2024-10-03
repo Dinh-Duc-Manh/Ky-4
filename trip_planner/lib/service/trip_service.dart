@@ -29,6 +29,7 @@ class TripService {
         DateTime.parse(maps[i]['end_date']),
         maps[i]['destination'],
         maps[i]['total_price'],
+        maps[i]['status'],
         maps[i]['tour_id'],
         maps[i]['user_id'],
       );
@@ -51,6 +52,7 @@ class TripService {
         DateTime.parse(maps[i]['end_date']),
         maps[i]['destination'],
         maps[i]['total_price'],
+        maps[i]['status'],
         maps[i]['tour_id'],
         maps[i]['user_id'],
       );

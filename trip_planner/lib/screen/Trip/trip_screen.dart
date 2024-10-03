@@ -86,11 +86,12 @@ class _TripScreenState extends State<TripScreen> {
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Trip code: ${trip.trip_id}'),
+                  Text('Trip Id: ${trip.trip_id}'),
                   Text('Trip Price: ${trip.budget.toStringAsFixed(2)} USD'),
                   Text('Start time: ${DateFormat.yMMMd().format(trip.start_date.toLocal())}'),
                   Text('End time: ${DateFormat.yMMMd().format(trip.end_date.toLocal())}'),
                   Text('Destination: ${trip.destination}'),
+                  Text('Trip Status: ${trip.status}'),
                 ],
               ),
               onTap: () {

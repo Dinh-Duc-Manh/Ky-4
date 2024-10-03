@@ -5,10 +5,12 @@ class Trips {
   DateTime end_date;
   String destination;
   double budget;
+  String status;
   int tour_id;
   int user_id;
 
-  Trips(this.trip_id, this.trip_name, this.start_date, this.end_date, this.destination, this.budget, this.tour_id, this.user_id);
+  Trips(this.trip_id, this.trip_name, this.start_date, this.end_date,
+      this.destination, this.budget, this.status, this.tour_id, this.user_id);
 
   Map<String, dynamic> toMap() {
     return {
@@ -17,9 +19,9 @@ class Trips {
       'end_date': end_date.toIso8601String(),
       'destination': destination,
       'total_price': budget,
+      'status': status,
       'tour_id': tour_id,
       'user_id': user_id,
     };
   }
-
 }

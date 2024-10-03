@@ -131,6 +131,7 @@ class _OrderScreenState extends State<OrderScreen> {
   }
 
   void placeOrder() async {
+    String status = 'Waiting for confirmation';
     Trips trip = Trips(
       -1, // Auto-incrementing trip_id, so this will be ignored
       widget.tour.tour_name,
@@ -138,6 +139,7 @@ class _OrderScreenState extends State<OrderScreen> {
       _endDate!,
       widget.tour.nation,
       widget.tour.tour_price * widget.quantity, // Total price
+      status,
       widget.tour.tour_id,
       widget.user.user_id!,
     );
