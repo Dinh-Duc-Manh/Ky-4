@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:trip_planner/model/Tours.dart';
-import 'package:trip_planner/screen/Detail/order_screen.dart';
+import 'package:trip_planner/screen/Trip/add_trip_screen.dart';
 
 
 import '../../../constants.dart';
 import '../../../model/Users.dart';
 
-class Trip extends StatefulWidget {
+class BookTrip extends StatefulWidget {
   final Users user;
   final Tours tour;
-  const Trip({super.key, required this.tour, required this.user});
+  const BookTrip({super.key, required this.tour, required this.user});
 
   @override
-  State<Trip> createState() => _TripState();
+  State<BookTrip> createState() => _BookTripState();
 }
 
-class _TripState extends State<Trip> {
+class _BookTripState extends State<BookTrip> {
   int currentIndex = 1;
 
   @override
@@ -85,7 +85,7 @@ class _TripState extends State<Trip> {
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => OrderScreen(
+                    builder: (context) => AddTripScreen(
                       user: widget.user,
                       tour: widget.tour,
                       quantity: currentIndex, // Pass the selected quantity

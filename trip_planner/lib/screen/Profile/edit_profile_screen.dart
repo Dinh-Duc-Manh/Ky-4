@@ -6,7 +6,6 @@ import 'package:image_picker/image_picker.dart';
 import '../../../model/Users.dart';
 import '../../../service/User_Service.dart';
 import '../../../service/data.dart';
-import 'detail_profile_screen.dart';
 
 class EditProfileScreen extends StatefulWidget {
   final int userId;

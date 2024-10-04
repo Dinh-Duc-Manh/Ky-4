@@ -8,7 +8,7 @@ import '../../../service/data.dart';
 import '../Login/sign_in_screen.dart';
 import '../Trip/trip_screen.dart';
 import 'detail_profile_screen.dart';
-import 'favorite_screen.dart';
+import '../Favorite/favorite_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   final int userId;

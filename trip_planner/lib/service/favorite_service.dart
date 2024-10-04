@@ -9,7 +9,7 @@ class FavoriteService {
     final db = await getDatabase();
     try {
       await db.insert(
-        'favorite',
+        'favorites',
         {
           'tour_id': tour.tour_id,
           'user_id': user.user_id,
@@ -28,7 +28,7 @@ class FavoriteService {
     final db = await getDatabase();
     try {
       await db.delete(
-        'favorite',
+        'favorites',
         where: 'tour_id = ? AND user_id = ?',
         whereArgs: [tourId, userId],
       );
@@ -44,7 +44,7 @@ class FavoriteService {
     final db = await getDatabase();
     try {
       final List<Map<String, dynamic>> result = await db.query(
-        'favorite',
+        'favorites',
         where: 'tour_id = ? AND user_id = ?',
         whereArgs: [tourId, userId],
       );
@@ -62,7 +62,7 @@ class FavoriteService {
       final List<Map<String, dynamic>> maps = await db.rawQuery('''
         SELECT t.tour_id, t.tour_name, t.tour_price, t.image, t.time, t.destination, t.schedule, t.nation 
         FROM tours t
-        INNER JOIN favorite f ON t.tour_id = f.tour_id
+        INNER JOIN favorites f ON t.tour_id = f.tour_id
         WHERE f.user_id = ?
       ''', [userId]);
 

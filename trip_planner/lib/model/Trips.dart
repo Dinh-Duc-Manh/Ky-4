@@ -14,6 +14,7 @@ class Trips {
 
   Map<String, dynamic> toMap() {
     return {
+      'trip_id': trip_id,
       'trip_name': trip_name,
       'start_date': start_date.toIso8601String(),
       'end_date': end_date.toIso8601String(),

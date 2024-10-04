@@ -122,7 +122,7 @@ class _AdminTripDetailScreenState extends State<AdminTripDetailScreen> {
             _buildSection('User Information', [
               _buildInfoRow('User ID', user!.user_id.toString()),
               _buildInfoRow('Username', user!.user_name),
-              _buildInfoRow('Full Name', user!.full_name ?? 'N/A'),
+              _buildInfoRow('Full Name', user!.full_name),
               _buildInfoRow('Email', user!.email),
             ]),
             SizedBox(height: 20),

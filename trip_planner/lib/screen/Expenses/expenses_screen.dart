@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:trip_planner/model/Expenses.dart';
 import 'package:trip_planner/model/Tours.dart';
 import 'package:trip_planner/model/Trips.dart';
-import 'package:trip_planner/screen/Trip/trip_screen.dart';
 import 'package:trip_planner/service/data.dart';
 import 'package:trip_planner/service/expenses_service.dart';
 

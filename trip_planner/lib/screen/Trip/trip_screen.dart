@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:trip_planner/screen/Trip/TripDetailScreen.dart';
+import 'package:trip_planner/screen/Trip/trip_detail_screen.dart';
 import '../../../model/Tours.dart';
 import '../../../model/Trips.dart';
 import '../../../service/data.dart';

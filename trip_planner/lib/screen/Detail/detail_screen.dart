@@ -1,71 +1,204 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import '../../constants.dart';
 import '../../model/Tours.dart';
 import '../../model/Users.dart';
+import '../../model/Comments.dart';
+import '../../service/comment_service.dart';
+import '../../service/data.dart';
 import 'Widget/detail_app_bar.dart';
 import 'Widget/items_details.dart';
-import 'Widget/trip.dart';
+import 'Widget/book_trip.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   final Users user;
   final Tours tour;
 
   const DetailScreen({super.key, required this.tour, required this.user});
 
   @override
+  _DetailScreenState createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  late CommentService _commentService;
+  List<Comments> _comments = [];
+  final TextEditingController _commentController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _initCommentService();
+  }
+
+  void _initCommentService() async {
+    final db = await getDatabase();
+    _commentService = CommentService(db);
+    _loadComments();
+  }
+
+  void _loadComments() async {
+    final data = await _commentService.getCommentsByTourId(widget.tour.tour_id);
+    setState(() {
+      _comments = data;
+    });
+  }
+
+  Future<void> _addComment() async {
+    if (_commentController.text.isNotEmpty) {
+      final newComment = Comments(
+        null, // Let the database generate the comment_id
+        _commentController.text,
+        widget.tour.tour_id,
+        widget.user.user_id!,
+      );
+
+      // Insert the comment and retrieve the auto-generated ID
+      int commentId = await _commentService.insertComment(newComment);
+
+      // Update the comments list to include the new comment
+      setState(() {
+        _comments.add(Comments(commentId, newComment.content, newComment.tour_id, newComment.user_id));
+      });
+
+      _commentController.clear();
+    }
+  }
+
+  void _showDeleteConfirmation(int commentId) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Delete Comment?'),
+          content: Text('Are you sure you want to delete this comment?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('No'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await _commentService.removeComment(commentId);
+                _loadComments(); // Refresh the list after deletion
+                Navigator.pop(context);
+              },
+              child: Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kcontentColor,
-      floatingActionButton: Trip(tour: tour, user: user),
+      floatingActionButton: BookTrip(tour: widget.tour, user: widget.user),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              DetailAppBar(tour: tour),
-              _buildImageSection(tour.image),
+              DetailAppBar(tour: widget.tour),
+              _buildImageSection(widget.tour.image),
               const SizedBox(height: 20),
-              Container(
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(40),
-                    topLeft: Radius.circular(40),
-                  ),
-                ),
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ItemsDetails(tour: tour),
-                    const SizedBox(height: 25),
-                    Text(
-                      tour.tour_name,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue,
-                          fontSize: 20),
-                    ),
-                    const SizedBox(height: 25),
-                    _buildTourSchedule(),
-                    const SizedBox(height: 25),
-                    _buildVisaInfo(),
-                    const SizedBox(height: 25),
-                    _buildGuideInfo(),
-                    const SizedBox(height: 100),
-                  ],
-                ),
-              ),
+              _buildTourDetails(),
             ],
           ),
         ),
       ),
     );
   }
+
+  Widget _buildTourDetails() {
+    return Container(
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(40),
+          topLeft: Radius.circular(40),
+        ),
+      ),
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ItemsDetails(tour: widget.tour),
+          const SizedBox(height: 25),
+          Text(
+            widget.tour.tour_name,
+            style: const TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.blue, fontSize: 20),
+          ),
+          const SizedBox(height: 25),
+          _buildTourSchedule(),
+          const SizedBox(height: 25),
+          _buildVisaInfo(),
+          const SizedBox(height: 25),
+          _buildGuideInfo(),
+          const SizedBox(height: 25),
+          _buildCommentsSection(),
+          const SizedBox(height: 100),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCommentsSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text("Comments",
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.blue, fontSize: 20)),
+        const SizedBox(height: 10),
+        _comments.isNotEmpty
+            ? ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: _comments.length,
+          itemBuilder: (context, index) {
+            final comment = _comments[index];
+            return Card(
+              child: ListTile(
+                title: Text('${widget.user.full_name}'),
+                subtitle: Text(comment.content),
+                trailing: comment.user_id == widget.user.user_id
+                    ? IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    _showDeleteConfirmation(comment.comment_id!);
+                  },
+                )
+                    : null,
+              ),
+            );
+          },
+        )
+            : const Text("No comments yet.",
+            style: TextStyle(fontStyle: FontStyle.italic)),
+        const SizedBox(height: 10),
+        TextField(
+          controller: _commentController,
+          decoration: InputDecoration(
+            hintText: 'Add a comment...',
+            suffixIcon: IconButton(
+              icon: const Icon(Icons.send),
+              onPressed: _addComment,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+
 
   Widget _buildTourSchedule() {
     return Column(
@@ -75,29 +208,39 @@ class DetailScreen extends StatelessWidget {
             style: TextStyle(
                 fontWeight: FontWeight.bold, color: Colors.blue, fontSize: 20)),
         const SizedBox(height: 10),
-        _buildFormattedSchedule(tour.schedule),
+        _buildFormattedSchedule(widget.tour.schedule),
       ],
     );
   }
+
   Widget _buildVisaInfo() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("Thông tin Visa", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue, fontSize: 20)),
+        const Text("Visa Information",
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.blue, fontSize: 20)),
         const SizedBox(height: 10),
-        const Text("- Quý khách chỉ cần hộ chiếu Việt Nam còn nguyên vẹn và có hạn sử dụng ít nhất 6 tháng tính từ ngày kết thúc tour.", style: TextStyle(fontSize: 16)),
+        const Text(
+            "- A valid Vietnamese passport is required with at least 6 months validity.",
+            style: TextStyle(fontSize: 16)),
         const SizedBox(height: 10),
-        const Text("- Miễn visa cho khách mang Quốc Tịch Việt Nam.", style: TextStyle(fontSize: 16)),
+        const Text("- Visa exemption for Vietnamese nationals.",
+            style: TextStyle(fontSize: 16)),
       ],
     );
   }
+
   Widget _buildGuideInfo() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("Hướng dẫn viên", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue, fontSize: 20)),
+        const Text("Guide Information",
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.blue, fontSize: 20)),
         const SizedBox(height: 10),
-        const Text("- Hướng Dẫn Viên (HDV) sẽ liên lạc với Quý Khách khoảng 2-3 ngày trước khi khởi hành.", style: TextStyle(fontSize: 16)),
+        const Text("- The guide will contact you 2-3 days before departure.",
+            style: TextStyle(fontSize: 16)),
       ],
     );
   }
@@ -108,7 +251,6 @@ class DetailScreen extends StatelessWidget {
 
     schedule.split('\n').forEach((line) {
       if (dayRegex.hasMatch(line)) {
-        //
         if (textSpans.isNotEmpty) {
           textSpans.add(const TextSpan(text: '\n'));
         }
@@ -140,7 +282,6 @@ class DetailScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 8),
           Container(
             height: 200,
             width: double.infinity,
@@ -153,7 +294,7 @@ class DetailScreen extends StatelessWidget {
                     "assets/images/tours/${imagePath}",
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
-                      return Icon(Icons.error);
+                      return const Icon(Icons.error);
                     },
                   ),
           ),

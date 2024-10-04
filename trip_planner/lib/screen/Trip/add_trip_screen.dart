@@ -2,24 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // For formatting dates
 import 'package:trip_planner/model/Tours.dart';
 import 'package:trip_planner/model/Trips.dart';
-import 'package:trip_planner/screen/Detail/expenses_screen.dart';
+import 'package:trip_planner/screen/Expenses/expenses_screen.dart';
 import 'package:trip_planner/service/data.dart';
 import 'package:trip_planner/service/trip_service.dart';
 
 import '../../model/Users.dart';
 
-class OrderScreen extends StatefulWidget {
+class AddTripScreen extends StatefulWidget {
   final Users user;
   final Tours tour;
   final int quantity;  // Add the quantity parameter
 
-  const OrderScreen({Key? key, required this.tour, required this.user, required this.quantity}) : super(key: key);
+  const AddTripScreen({Key? key, required this.tour, required this.user, required this.quantity}) : super(key: key);
 
   @override
-  _OrderScreenState createState() => _OrderScreenState();
+  _AddTripScreenState createState() => _AddTripScreenState();
 }
 
-class _OrderScreenState extends State<OrderScreen> {
+class _AddTripScreenState extends State<AddTripScreen> {
   DateTime? _startDate;
   DateTime? _endDate;
 
