@@ -4,16 +4,16 @@ import 'package:trip_planner/screen/Detail/detail_screen.dart';
 import 'package:trip_planner/service/favorite_service.dart';
 import '../../../model/Users.dart';
 
-class FavoritesPage extends StatefulWidget {
+class FavoriteScreen extends StatefulWidget {
   final Users user;
 
-  const FavoritesPage({Key? key, required this.user}) : super(key: key);
+  const FavoriteScreen({Key? key, required this.user}) : super(key: key);
 
   @override
-  _FavoritesPageState createState() => _FavoritesPageState();
+  _FavoriteScreenState createState() => _FavoriteScreenState();
 }
 
-class _FavoritesPageState extends State<FavoritesPage> {
+class _FavoriteScreenState extends State<FavoriteScreen> {
   late Future<List<Tours>> _favoriteTours;
   final FavoriteService _favoriteService = FavoriteService();
 
@@ -25,7 +25,8 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
   void _loadFavoriteTours() {
     setState(() {
-      _favoriteTours = _favoriteService.getFavoriteToursByUserId(widget.user.user_id!);
+      _favoriteTours =
+          _favoriteService.getFavoriteToursByUserId(widget.user.user_id!);
     });
   }
 
@@ -59,11 +60,23 @@ class _FavoritesPageState extends State<FavoritesPage> {
                   ),
                   title: Text(tour.tour_name),
                   subtitle: Text("${tour.tour_price} USD"),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {
+                          showConfirm(context, tour.tour_id, widget.user.user_id!);
+                        },
+                      ),
+                    ],
+                  ),
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DetailScreen(tour: tour, user: widget.user),
+                        builder: (context) =>
+                            DetailScreen(tour: tour, user: widget.user),
                       ),
                     );
                   },
@@ -73,6 +86,34 @@ class _FavoritesPageState extends State<FavoritesPage> {
           }
         },
       ),
+    );
+  }
+
+  void showConfirm(BuildContext context, int tourId, int userId) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Delete favorite tours?'),
+          content: Text('Are you sure you want to delete this favorite tours???'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('No'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await _favoriteService.removeFavorite(tourId, userId);
+                _loadFavoriteTours(); // Refresh the list after deletion
+                Navigator.pop(context);
+              },
+              child: Text('Yes'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

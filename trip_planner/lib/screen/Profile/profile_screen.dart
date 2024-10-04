@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:trip_planner/screen/Profile/Favorite_screen.dart';
 import '../../../model/Users.dart';
 import '../../../service/user_service.dart';
 import '../../../service/data.dart';
 import '../Login/sign_in_screen.dart';
 import '../Trip/trip_screen.dart';
 import 'detail_profile_screen.dart';
+import 'favorite_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   final int userId;
@@ -82,7 +82,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => FavoritesPage(user: user),
+        builder: (context) => FavoriteScreen(user: user),
       ),
     );
   }
