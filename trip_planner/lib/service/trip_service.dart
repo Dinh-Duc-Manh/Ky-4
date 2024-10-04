@@ -36,6 +36,39 @@ class TripService {
     });
   }
 
+  Future<Trips> get(int id) async {
+    final List<Map<String, dynamic>> maps = await db.query(
+      'trips',
+      where: 'trip_id = ?',
+      whereArgs: [id],
+    );
+
+    if (maps.isNotEmpty) {
+      return Trips(
+        maps.first['trip_id'],
+        maps.first['trip_name'],
+        DateTime.parse(maps.first['start_date']),
+        DateTime.parse(maps.first['end_date']),
+        maps.first['destination'],
+        maps.first['total_price'],
+        maps.first['status'],
+        maps.first['tour_id'],
+        maps.first['user_id'],
+      );
+    } else {
+      throw Exception('Trip not found');
+    }
+  }
+
+  Future<int> update(Trips trip) async {
+    return await db.update(
+      'trips',
+      trip.toMap(),
+      where: 'trip_id = ?',
+      whereArgs: [trip.trip_id],
+    );
+  }
+
   // Fetch trips by user_id
   Future<List<Trips>> getByUserId(int userId) async {
     final List<Map<String, dynamic>> maps = await db.query(

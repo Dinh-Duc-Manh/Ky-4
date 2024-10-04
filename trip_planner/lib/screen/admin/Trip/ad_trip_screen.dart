@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import for date formatting
+import 'package:trip_planner/screen/admin/Trip/admin_trip_detail_screen.dart';
 import '../../../model/Tours.dart';
 import '../../../model/Trips.dart';
 import '../../../service/data.dart';
@@ -62,15 +63,17 @@ class _AdTripScreenState extends State<AdTripScreen> {
       appBar: AppBar(
         title: const Text('Trip List'),
       ),
-      body: trips.isEmpty
-          ? Center(child: Text('No trips found for this user.'))
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : trips.isEmpty
+          ? Center(child: Text('No trips found.'))
           : ListView.builder(
         itemCount: trips.length,
         itemBuilder: (context, index) {
           final trip = trips[index];
-          // Find the corresponding tour for this trip
           final tour = tours.firstWhere(
                 (t) => t.tour_id == trip.tour_id,
+            orElse: () => Tours(0, 'Unknown Tour', '', 0, '', '', '', 0),
           );
 
           return Card(
@@ -90,20 +93,23 @@ class _AdTripScreenState extends State<AdTripScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('Trip code: ${trip.trip_id}'),
-                  Text('Account Id: ${trip.user_id}'),
                   Text('Trip Price: ${trip.budget.toStringAsFixed(2)} USD'),
                   Text('Start time: ${DateFormat.yMMMd().format(trip.start_date.toLocal())}'),
                   Text('End time: ${DateFormat.yMMMd().format(trip.end_date.toLocal())}'),
                   Text('Destination: ${trip.destination}'),
+                  Text('Status: ${trip.status}'),
                 ],
               ),
               onTap: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => DetailTripScreen(tripId: trip.trip_id),
-                //   ),
-                // );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AdminTripDetailScreen(tripId: trip.trip_id),
+                  ),
+                ).then((_) {
+                  // Refresh the trip list when returning from the detail screen
+                  getTrips();
+                });
               },
             ),
           );

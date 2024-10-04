@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:trip_planner/screen/Trip/TripDetailScreen.dart';
 import '../../../model/Tours.dart';
 import '../../../model/Trips.dart';
 import '../../../service/data.dart';
@@ -95,7 +96,12 @@ class _TripScreenState extends State<TripScreen> {
                 ],
               ),
               onTap: () {
-                // You can navigate to a detail page if needed
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TripDetailScreen(trip: trip, tour: tour),
+                  ),
+                );
               },
             ),
           );
