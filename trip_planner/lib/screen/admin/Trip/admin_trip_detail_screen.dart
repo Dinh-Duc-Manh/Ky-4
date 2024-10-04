@@ -132,15 +132,15 @@ class _AdminTripDetailScreenState extends State<AdminTripDetailScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
-                  onPressed: trip!.status == 'waiting for confirmation'
-                      ? () => _updateTripStatus('trip confirmed')
+                  onPressed: trip!.status == 'Waiting for confirmation'
+                      ? () => _updateTripStatus('Trip confirmed')
                       : null,
                   child: Text('Confirm Trip'),
 
                 ),
                 ElevatedButton(
-                  onPressed: trip!.status == 'trip confirmed'
-                      ? () => _updateTripStatus('complete the trip')
+                  onPressed: trip!.status == 'Trip confirmed'
+                      ? () => _updateTripStatus('Complete the trip')
                       : null,
                   child: Text('Complete Trip'),
 

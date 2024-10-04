@@ -151,7 +151,7 @@ class _OrderScreenState extends State<OrderScreen> {
     print("Trip booked: ${trip.toMap()}");
 
     // Pass start and end dates to ExpensesScreen
-    Navigator.push(
+    Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
         builder: (context) => ExpensesScreen(
@@ -164,6 +164,7 @@ class _OrderScreenState extends State<OrderScreen> {
           tourPrice: widget.tour.tour_price, // Pass the tour price
         ),
       ),
+          (route) => false, // Remove all previous routes
     );
   }
 }

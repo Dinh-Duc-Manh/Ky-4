@@ -111,10 +111,13 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
     // Print for debugging purposes
     print("Expense inserted: ${expense.toMap()}");
 
-    // Navigate to the TripScreen after booking
-    Navigator.push(
+    // Navigate to the NavHomeScreen after booking
+    Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => NavHomeScreen(user: widget.user)),
+      MaterialPageRoute(
+        builder: (context) => NavHomeScreen(user: widget.user),
+      ),
+      (route) => false, // Remove all previous routes
     );
   }
 }

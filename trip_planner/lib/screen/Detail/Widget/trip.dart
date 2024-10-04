@@ -81,8 +81,8 @@ class _TripState extends State<Trip> {
             ),
             GestureDetector(
               onTap: () {
-                // Navigate to the order screen after adding to cart
-                Navigator.push(
+                // Navigate to the order screen after adding to cart and remove the previous pages from the stack
+                Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: (context) => OrderScreen(
@@ -91,6 +91,7 @@ class _TripState extends State<Trip> {
                       quantity: currentIndex, // Pass the selected quantity
                     ),
                   ),
+                      (route) => false, // Remove all previous routes
                 );
               },
               child: Container(
