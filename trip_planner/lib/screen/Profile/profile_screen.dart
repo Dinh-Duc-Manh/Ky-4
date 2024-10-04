@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:trip_planner/screen/Profile/Favorite_screen.dart';
 import '../../../model/Users.dart';
 import '../../../service/user_service.dart';
 import '../../../service/data.dart';
@@ -77,6 +78,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+  void _Favorite(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FavoritesPage(user: user),
+      ),
+    );
+  }
 
   void _detailProfile(BuildContext context) {
     Navigator.push(
@@ -134,8 +143,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onTap: () => _detailProfile(context),
                     child: _buildRow('Thông tin người dùng', context),
                   ),
+
                   const SizedBox(height: 16),
-                  _buildRow('Lịch sử yêu thích', context),
+                  GestureDetector(
+                    onTap: () => _Favorite(context),
+                    child: _buildRow('Lịch sử yêu thích', context),
+                  ),
                   const SizedBox(height: 16),
                   GestureDetector(
                     onTap: () => _trip(context),
