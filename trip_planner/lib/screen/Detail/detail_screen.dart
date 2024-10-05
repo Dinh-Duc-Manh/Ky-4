@@ -47,16 +47,14 @@ class _DetailScreenState extends State<DetailScreen> {
   Future<void> _addComment() async {
     if (_commentController.text.isNotEmpty) {
       final newComment = Comments(
-        null, // Let the database generate the comment_id
+        null,
         _commentController.text,
         widget.tour.tour_id,
         widget.user.user_id!,
       );
 
-      // Insert the comment and retrieve the auto-generated ID
       int commentId = await _commentService.insertComment(newComment);
 
-      // Update the comments list to include the new comment
       setState(() {
         _comments.add(Comments(commentId, newComment.content, newComment.tour_id, newComment.user_id));
       });
@@ -82,10 +80,52 @@ class _DetailScreenState extends State<DetailScreen> {
             TextButton(
               onPressed: () async {
                 await _commentService.removeComment(commentId);
-                _loadComments(); // Refresh the list after deletion
+                _loadComments();
                 Navigator.pop(context);
               },
               child: Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showEditDialog(Comments comment) {
+    final TextEditingController editController = TextEditingController(text: comment.content);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Edit Comment'),
+          content: TextField(
+            controller: editController,
+            decoration: InputDecoration(hintText: 'Enter your updated comment'),
+            maxLines: 3,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                if (editController.text.isNotEmpty) {
+                  final updatedComment = Comments(
+                    comment.comment_id,
+                    editController.text,
+                    comment.tour_id,
+                    comment.user_id,
+                  );
+                  await _commentService.updateComment(updatedComment);
+                  _loadComments();
+                  Navigator.pop(context);
+                }
+              },
+              child: Text('Save'),
             ),
           ],
         );
@@ -144,7 +184,7 @@ class _DetailScreenState extends State<DetailScreen> {
           _buildGuideInfo(),
           const SizedBox(height: 25),
           _buildCommentsSection(),
-          const SizedBox(height: 100),
+          const SizedBox(height: 150),
         ],
       ),
     );
@@ -170,11 +210,22 @@ class _DetailScreenState extends State<DetailScreen> {
                 title: Text('${widget.user.full_name}'),
                 subtitle: Text(comment.content),
                 trailing: comment.user_id == widget.user.user_id
-                    ? IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () {
-                    _showDeleteConfirmation(comment.comment_id!);
-                  },
+                    ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        _showEditDialog(comment);
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        _showDeleteConfirmation(comment.comment_id!);
+                      },
+                    ),
+                  ],
                 )
                     : null,
               ),

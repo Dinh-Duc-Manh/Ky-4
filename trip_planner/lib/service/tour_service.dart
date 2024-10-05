@@ -6,7 +6,6 @@ class TourService {
   Database db;
   TourService(this.db);
 
-
   Future<int> insert(Tours tour) async {
     // Remove tour_id from the map for insertion
     final tourMap = tour.toMap();
@@ -16,6 +15,7 @@ class TourService {
         conflictAlgorithm: ConflictAlgorithm.replace);
     return id;
   }
+
   // Update an existing tour
   Future<void> update(Tours tour) async {
     await db.update(
@@ -31,16 +31,16 @@ class TourService {
     final List<Map<String, Object?>> tours = await db.query("tours");
     return [
       for (final {
-      'tour_id': id as int,
-      'tour_name': name as String,
-      'image': image as String,
-      'time': time as int,
-      'destination': dest as String,
-      'schedule': sched as String,
-      'nation': nation as String,
-      'tour_price': tour_price as double
-      } in tours)
-        Tours(id, name, image, time, dest, sched , nation, tour_price),
+            'tour_id': id as int,
+            'tour_name': name as String,
+            'image': image as String,
+            'time': time as int,
+            'destination': dest as String,
+            'schedule': sched as String,
+            'nation': nation as String,
+            'tour_price': tour_price as double
+          } in tours)
+        Tours(id, name, image, time, dest, sched, nation, tour_price),
     ];
   }
 
@@ -53,16 +53,18 @@ class TourService {
       where: "nation LIKE ?",
       whereArgs: ["%$nation%"],
     );
-    return tours.map((tour) => Tours(
-      tour['tour_id'] as int? ?? 0,
-      tour['tour_name'] as String? ?? '',
-      tour['image'] as String? ?? '',
-      tour['time'] as int? ?? 0,
-      tour['destination'] as String? ?? '',
-      tour['schedule'] as String? ?? '',
-      tour['nation'] as String? ?? '',
-      (tour['tour_price'] as num?)?.toDouble() ?? 0.0,
-    )).toList();
+    return tours
+        .map((tour) => Tours(
+              tour['tour_id'] as int? ?? 0,
+              tour['tour_name'] as String? ?? '',
+              tour['image'] as String? ?? '',
+              tour['time'] as int? ?? 0,
+              tour['destination'] as String? ?? '',
+              tour['schedule'] as String? ?? '',
+              tour['nation'] as String? ?? '',
+              (tour['tour_price'] as num?)?.toDouble() ?? 0.0,
+            ))
+        .toList();
   }
 
   // Search for tours by name
@@ -74,26 +76,23 @@ class TourService {
     );
     return [
       for (final {
-      'tour_id': id as int,
-      'tour_name': name as String,
-      'image': image as String,
-      'time': time as int,
-      'destination': dest as String,
-      'schedule': sched as String,
-      'nation': nation as String,
-      'tour_price': tour_price as double
-      } in tours)
+            'tour_id': id as int,
+            'tour_name': name as String,
+            'image': image as String,
+            'time': time as int,
+            'destination': dest as String,
+            'schedule': sched as String,
+            'nation': nation as String,
+            'tour_price': tour_price as double
+          } in tours)
         Tours(id, name, image, time, dest, sched, nation, tour_price),
     ];
   }
 
   // Retrieve a tour by ID
-
   Future<Tours> getById(int id) async {
-    List<Map<String, dynamic>> maps = await db.query('tours',
-        where: 'tour_id = ?',
-        whereArgs: [id]);
-
+    List<Map<String, dynamic>> maps =
+        await db.query('tours', where: 'tour_id = ?', whereArgs: [id]);
     if (maps.isNotEmpty) {
       return Tours(
         maps.first['tour_id'],
@@ -109,6 +108,7 @@ class TourService {
       throw Exception('ID $id not found');
     }
   }
+
   // Delete a tour by ID
   Future<void> delete(int id) async {
     await db.delete("tours", where: "tour_id = ?", whereArgs: [id]);

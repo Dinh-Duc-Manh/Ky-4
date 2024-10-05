@@ -58,4 +58,17 @@ class CommentService {
     }
   }
 
+  // Update an existing comment
+  Future<void> updateComment(Comments comment) async {
+    await db.update(
+      "comments",
+      {
+        'content': comment.content,
+        'tour_id': comment.tour_id,
+        'user_id': comment.user_id,
+      },
+      where: "comment_id = ?",
+      whereArgs: [comment.comment_id],
+    );
+  }
 }
