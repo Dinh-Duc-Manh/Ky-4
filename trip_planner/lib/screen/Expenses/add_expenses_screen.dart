@@ -91,7 +91,7 @@ class _AddExpensesScreenState extends State<AddExpensesScreen> {
     // Create an Expense object with the user's notes
     Expenses expense = Expenses(
       null, // Set expense_id to null, it will be auto-generated
-      dailyExpense, // Use dailyExpense as the amount (it's already a double)
+      widget.amount , // Use dailyExpense as the amount (it's already a double)
       dailyExpense.toStringAsFixed(2), // Use dailyExpense as expense_date
       notes, // User's notes
       widget.trip.trip_id!, // Trip ID

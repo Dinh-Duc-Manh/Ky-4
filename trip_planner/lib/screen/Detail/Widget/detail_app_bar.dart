@@ -24,10 +24,7 @@ class DetailAppBar extends StatelessWidget {
             icon: const Icon(Icons.arrow_back_ios),
           ),
           const Spacer(),
-          Text(
-            "Tour code ${tour.tour_id} details",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-          ),
+
         ],
       ),
     );

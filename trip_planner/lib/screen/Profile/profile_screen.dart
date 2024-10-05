@@ -141,24 +141,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(height: 16),
                   GestureDetector(
                     onTap: () => _detailProfile(context),
-                    child: _buildRow('Thông tin người dùng', context),
+                    child: _buildRow('User Information', context),
                   ),
 
                   const SizedBox(height: 16),
                   GestureDetector(
                     onTap: () => _Favorite(context),
-                    child: _buildRow('Lịch sử yêu thích', context),
+                    child: _buildRow('Favorite History', context),
                   ),
                   const SizedBox(height: 16),
                   GestureDetector(
                     onTap: () => _trip(context),
-                    child: _buildRow('Lịch sử đặt chuyến', context),
+                    child: _buildRow('Trip history', context),
                   ),
                   const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text('Phiên bản', style: infoStyle),
+                      Text('Version', style: infoStyle),
                       const Spacer(),
                       Text('0.1', style: infoStyle),
                     ],

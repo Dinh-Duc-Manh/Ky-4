@@ -165,10 +165,10 @@ class _TripDetailScreenState extends State<TripDetailScreen> {
         Text("Tour Price: \$${widget.tour.tour_price.toStringAsFixed(2)}",
             style: const TextStyle(
                 fontWeight: FontWeight.bold, fontSize: 17, height: 1.8)),
-        Text("Cost 1 day: \$${expense.amount.toStringAsFixed(2)}",
+        Text("Cost 1 day: \$${expense.expense_date}",
             style: const TextStyle(
                 fontWeight: FontWeight.bold, fontSize: 17, height: 1.8)),
-        Text("Expenses note: \$${expense.amount.toStringAsFixed(2)}",
+        Text("Expenses note: ${expense.notes}",
             style: const TextStyle(
                 fontWeight: FontWeight.bold, fontSize: 17, height: 1.8)),
       ],

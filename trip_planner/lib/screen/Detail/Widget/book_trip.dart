@@ -82,7 +82,7 @@ class _BookTripState extends State<BookTrip> {
             GestureDetector(
               onTap: () {
                 // Navigate to the order screen after adding to cart and remove the previous pages from the stack
-                Navigator.pushAndRemoveUntil(
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => AddTripScreen(
@@ -91,7 +91,7 @@ class _BookTripState extends State<BookTrip> {
                       quantity: currentIndex, // Pass the selected quantity
                     ),
                   ),
-                      (route) => false, // Remove all previous routes
+                       // Remove all previous routes
                 );
               },
               child: Container(

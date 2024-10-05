@@ -1,6 +1,6 @@
 class Expenses {
   int? expense_id;
-  double amount; // Changed from int to double
+  int amount; // Changed from int to double
   String expense_date;
   String notes;
   int trip_id;
@@ -24,7 +24,7 @@ class Expenses {
   factory Expenses.fromMap(Map<String, dynamic> map) {
     return Expenses(
       map['expense_id'],
-      (map['amount'] as num).toDouble(), // Convert to double
+      map['amount'], // Convert to double
       map['expense_date'],
       map['notes'],
       map['trip_id'],

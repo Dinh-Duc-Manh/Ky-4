@@ -55,7 +55,7 @@ class _TripScreenState extends State<TripScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Trips for ${widget.user.full_name}'),
+        title: Text('List of your trips'),
       ),
       body: RefreshIndicator(
         onRefresh: refreshData,
