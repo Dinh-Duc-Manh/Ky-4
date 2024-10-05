@@ -104,7 +104,7 @@ class _AdTripScreenState extends State<AdTripScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AdminTripDetailScreen(tripId: trip.trip_id),
+                    builder: (context) => AdminTripDetailScreen(tripId: trip.trip_id!),
                   ),
                 ).then((_) {
                   // Refresh the trip list when returning from the detail screen

@@ -38,13 +38,13 @@ class Users {
       full_name: map['full_name'] as String? ?? '', // Default to empty string
       user_name: map['user_name'] as String? ?? '', // Default to empty string
       email: map['email'] as String? ?? '', // Default to empty string
-      password_hash: map['password_hash'] as String? ?? '', // Default to empty string
+      password_hash:
+          map['password_hash'] as String? ?? '', // Default to empty string
       avatar: map['avatar'] as String? ?? '', // Default to empty string
       role: map['role'] as String? ?? 'user', // Default role if null
       status: map['status'] as String? ?? 'inactive', // Default status if null
     );
   }
-
 
   @override
   String toString() {

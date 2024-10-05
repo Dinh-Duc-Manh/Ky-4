@@ -8,31 +8,31 @@ import 'package:trip_planner/service/expenses_service.dart';
 import '../../model/Users.dart';
 import '../nav_home_screen.dart';
 
-class ExpensesScreen extends StatefulWidget {
+class AddExpensesScreen extends StatefulWidget {
   final Tours tour;
   final Users user;
   final Trips trip;
   final int amount; // Quantity
-  final DateTime startDate; // Start date of the tour
-  final DateTime endDate; // End date of the tour
-  final double tourPrice; // Price of the tour
+  final DateTime startDate;
+  final DateTime endDate;
+  final double tourPrice;
 
-  const ExpensesScreen(
-      {Key? key,
-      required this.amount,
-      required this.startDate,
-      required this.endDate,
-      required this.tourPrice,
-      required this.tour,
-      required this.trip,
-      required this.user})
-      : super(key: key);
+  const AddExpensesScreen({
+    Key? key,
+    required this.amount,
+    required this.startDate,
+    required this.endDate,
+    required this.tourPrice,
+    required this.tour,
+    required this.trip,
+    required this.user
+  }) : super(key: key);
 
   @override
-  _ExpensesScreenState createState() => _ExpensesScreenState();
+  _AddExpensesScreenState createState() => _AddExpensesScreenState();
 }
 
-class _ExpensesScreenState extends State<ExpensesScreen> {
+class _AddExpensesScreenState extends State<AddExpensesScreen> {
   final TextEditingController _notesController = TextEditingController();
 
   @override
@@ -88,27 +88,22 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
   void placeOrder(BuildContext context, double dailyExpense) async {
     String notes = _notesController.text;
 
-    // Use dailyExpense as expense_date in the string format for your model
-    String expenseDate =
-        dailyExpense.toStringAsFixed(2); // Keep it as a price format
-
     // Create an Expense object with the user's notes
     Expenses expense = Expenses(
-      -1,
-      widget.amount, // The amount or quantity
-      expenseDate, // Use dailyExpense as expense_date
+      null, // Set expense_id to null, it will be auto-generated
+      dailyExpense, // Use dailyExpense as the amount (it's already a double)
+      dailyExpense.toStringAsFixed(2), // Use dailyExpense as expense_date
       notes, // User's notes
-      widget.trip.trip_id, // Trip ID
-      widget.user.user_id!, // Example user_id, replace with actual user_id
+      widget.trip.trip_id!, // Trip ID
+      widget.user.user_id!, // User ID
     );
 
     // Insert the expense into the database
-    final db = await getDatabase();
-    ExpenseService expenseService = ExpenseService(db);
-    await expenseService.insertExpense(expense);
-
-    // Print for debugging purposes
-    print("Expense inserted: ${expense.toMap()}");
+    ExpenseService service = ExpenseService(await getDatabase());
+    int newExpenseId = await service.insertExpense(expense);
+    // Update the expense object with the new ID
+    expense.expense_id = newExpenseId;
+    print("Expense booked: ${expense.toMap()}");
 
     // Navigate to the NavHomeScreen after booking
     Navigator.pushAndRemoveUntil(
@@ -116,7 +111,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
       MaterialPageRoute(
         builder: (context) => NavHomeScreen(user: widget.user),
       ),
-      (route) => false, // Remove all previous routes
+          (route) => false, // Remove all previous routes
     );
   }
 }

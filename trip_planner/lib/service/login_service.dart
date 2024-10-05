@@ -9,7 +9,8 @@ class LoginService {
   Future<int> insert(Users user) async {
     final userMap = user.toMap();
     userMap.remove('user_id'); // Ensure user_id is not included
-    int id = await db.insert('users', userMap, conflictAlgorithm: ConflictAlgorithm.replace);
+    int id = await db.insert('users', userMap,
+        conflictAlgorithm: ConflictAlgorithm.replace);
     return id; // Return the generated ID
   }
 

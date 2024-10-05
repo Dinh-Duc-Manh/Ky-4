@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // For formatting dates
 import 'package:trip_planner/model/Tours.dart';
 import 'package:trip_planner/model/Trips.dart';
-import 'package:trip_planner/screen/Expenses/expenses_screen.dart';
+import 'package:trip_planner/screen/Expenses/add_expenses_screen.dart';
 import 'package:trip_planner/service/data.dart';
 import 'package:trip_planner/service/trip_service.dart';
 
@@ -133,7 +133,7 @@ class _AddTripScreenState extends State<AddTripScreen> {
   void placeOrder() async {
     String status = 'Waiting for confirmation';
     Trips trip = Trips(
-      -1, // Auto-incrementing trip_id, so this will be ignored
+      null, // Set trip_id to null, it will be auto-generated
       widget.tour.tour_name,
       _startDate!,
       _endDate!,
@@ -146,25 +146,28 @@ class _AddTripScreenState extends State<AddTripScreen> {
 
     // Insert the trip into the database
     TripService service = TripService(await getDatabase());
-    await service.insertTrip(trip);
+    int newTripId = await service.insertTrip(trip);
+
+    // Update the trip object with the new ID
+    trip.trip_id = newTripId;
 
     print("Trip booked: ${trip.toMap()}");
 
-    // Pass start and end dates to ExpensesScreen
+    // Navigate to ExpensesScreen
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
-        builder: (context) => ExpensesScreen(
+        builder: (context) => AddExpensesScreen(
           tour: widget.tour,
           user: widget.user,
           trip: trip,
-          amount: widget.quantity, // Pass the quantity as amount
+          amount: widget.quantity,
           startDate: _startDate!,
           endDate: _endDate!,
-          tourPrice: widget.tour.tour_price, // Pass the tour price
+          tourPrice: widget.tour.tour_price,
         ),
       ),
-          (route) => false, // Remove all previous routes
+          (route) => false,
     );
   }
 }

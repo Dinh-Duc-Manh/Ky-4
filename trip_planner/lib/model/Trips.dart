@@ -1,5 +1,5 @@
 class Trips {
-  int trip_id;
+  int? trip_id;
   String trip_name;
   DateTime start_date;
   DateTime end_date;

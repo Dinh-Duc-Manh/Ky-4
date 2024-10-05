@@ -8,7 +8,8 @@ class Tours {
   String nation;
   double tour_price;
 
-  Tours(this.tour_id,this.tour_name, this.image,this.time,this.destination, this.schedule,this.nation, this.tour_price);
+  Tours(this.tour_id, this.tour_name, this.image, this.time, this.destination,
+      this.schedule, this.nation, this.tour_price);
 
   Map<String, Object?> toMap() {
     return {

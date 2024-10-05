@@ -35,7 +35,6 @@ class UserService {
     ];
   }
 
-
   // Search for users by name
   Future<List<Users>> search(String query) async {
     final List<Map<String, Object?>> users = await db.query(

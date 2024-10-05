@@ -25,35 +25,30 @@ class _TripScreenState extends State<TripScreen> {
   List<Tours> tours = [];
   late TourService tourService;
 
-  Future<void> getTrips() async {
-    try {
-      tripService = TripService(await getDatabase());
-      var data = await tripService.getByUserId(widget.user.user_id!);
-      setState(() {
-        trips = data;
-      });
-    } catch (e) {
-      print("Error getting trips: $e");
-    }
-  }
-
-  Future<void> getTours() async {
-    try {
-      tourService = TourService(await getDatabase());
-      var data = await tourService.getAll();
-      setState(() {
-        tours = data;
-      });
-    } catch (e) {
-      print("Error getting tours: $e");
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    getTrips();
-    getTours();
+    initServices();
+  }
+
+  Future<void> initServices() async {
+    final db = await getDatabase();
+    tripService = TripService(db);
+    tourService = TourService(db);
+    await refreshData();
+  }
+
+  Future<void> refreshData() async {
+    try {
+      var tripData = await tripService.getByUserId(widget.user.user_id!);
+      var tourData = await tourService.getAll();
+      setState(() {
+        trips = tripData;
+        tours = tourData;
+      });
+    } catch (e) {
+      print("Error refreshing data: $e");
+    }
   }
 
   @override
@@ -62,50 +57,56 @@ class _TripScreenState extends State<TripScreen> {
       appBar: AppBar(
         title: Text('Trips for ${widget.user.full_name}'),
       ),
-      body: trips.isEmpty
-          ? Center(child: Text('No trips found for this user.'))
-          : ListView.builder(
-        itemCount: trips.length,
-        itemBuilder: (context, index) {
-          final trip = trips[index];
-          final tour = tours.firstWhere(
-                (t) => t.tour_id == trip.tour_id,
-          );
-          return Card(
-            margin: EdgeInsets.all(8),
-            child: ListTile(
-              leading: Container(
-                width: 80,
-                height: 80,
-                child: _buildTripImage(tour.image),
+      body: RefreshIndicator(
+        onRefresh: refreshData,
+        child: trips.isEmpty
+            ? Center(child: Text('No trips found for this user.'))
+            : ListView.builder(
+          itemCount: trips.length,
+          itemBuilder: (context, index) {
+            final trip = trips[index];
+            final tour = tours.firstWhere(
+                  (t) => t.tour_id == trip.tour_id,
+            );
+            return Card(
+              margin: EdgeInsets.all(8),
+              child: ListTile(
+                leading: Container(
+                  width: 80,
+                  height: 80,
+                  child: _buildTripImage(tour.image),
+                ),
+                title: Text(
+                  trip.trip_name,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Trip Id: ${trip.trip_id}'),
+                    Text('Trip Price: ${trip.budget.toStringAsFixed(2)} USD'),
+                    Text('Start time: ${DateFormat.yMMMd().format(trip.start_date.toLocal())}'),
+                    Text('End time: ${DateFormat.yMMMd().format(trip.end_date.toLocal())}'),
+                    Text('Destination: ${trip.destination}'),
+                    Text('Trip Status: ${trip.status}'),
+                  ],
+                ),
+                onTap: () async {
+                  final result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TripDetailScreen(trip: trip, tour: tour),
+                    ),
+                  );
+                  if (result == true) {
+                    await refreshData();
+                  }
+                },
               ),
-              title: Text(
-                trip.trip_name,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Trip Id: ${trip.trip_id}'),
-                  Text('Trip Price: ${trip.budget.toStringAsFixed(2)} USD'),
-                  Text('Start time: ${DateFormat.yMMMd().format(trip.start_date.toLocal())}'),
-                  Text('End time: ${DateFormat.yMMMd().format(trip.end_date.toLocal())}'),
-                  Text('Destination: ${trip.destination}'),
-                  Text('Trip Status: ${trip.status}'),
-                ],
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => TripDetailScreen(trip: trip, tour: tour),
-                  ),
-                );
-              },
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

@@ -1,5 +1,4 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:trip_planner/service/data.dart';
 import '../model/Trips.dart';
 
 class TripService {
@@ -8,13 +7,13 @@ class TripService {
   TripService(this.db);
 
   // Insert a new trip
-  Future<void> insertTrip(Trips trip) async {
-    final db = await getDatabase();
-    await db.insert(
-      'trips',
-      trip.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+  Future<int> insertTrip(Trips trip) async {
+    final tripMap = trip.toMap();
+    tripMap.remove('trip_id'); // Remove trip_id from the map for insertion
+
+    int id = await db.insert('trips', tripMap,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+    return id;
   }
 
   // Fetch all trips
@@ -66,6 +65,15 @@ class TripService {
       trip.toMap(),
       where: 'trip_id = ?',
       whereArgs: [trip.trip_id],
+    );
+  }
+
+  Future<void> flight_canceled(int tripId, String newStatus) async {
+    await db.update(
+      'trips',
+      {'status': newStatus},
+      where: 'trip_id = ?',
+      whereArgs: [tripId],
     );
   }
 
