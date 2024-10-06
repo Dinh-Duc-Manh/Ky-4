@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-
 import '../../../model/Tours.dart';
 import '../../../service/data.dart';
 import '../../../service/tour_service.dart';
@@ -10,6 +9,7 @@ import 'edit_tour_form_screen.dart';
 
 class AdTourScreen extends StatefulWidget {
   const AdTourScreen({super.key});
+
   @override
   _AdTourScreenState createState() => _AdTourScreenState();
 }
@@ -91,8 +91,7 @@ class _AdTourScreenState extends State<AdTourScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              EditTourFormScreen(tour.tour_id),
+                          builder: (context) => EditTourFormScreen(tour.tour_id),
                         ),
                       ).then((_) {
                         getTours();
@@ -125,7 +124,7 @@ class _AdTourScreenState extends State<AdTourScreen> {
 
   Widget _buildTourImage(String imagePath) {
     if (imagePath.startsWith('/data/')) {
-      // If it's an asset image
+      // If it's a file image
       return Image.file(
         File(imagePath),
         fit: BoxFit.cover,
@@ -134,6 +133,7 @@ class _AdTourScreenState extends State<AdTourScreen> {
         },
       );
     } else {
+      // Asset image
       return Image.asset(
         "assets/images/tours/$imagePath",
         fit: BoxFit.cover,
@@ -146,22 +146,50 @@ class _AdTourScreenState extends State<AdTourScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Delete tour?'),
-          content: Text('Are you sure you want to delete this tour???'),
+          title: Text('Delete Tour'),
+          content: Text('Are you sure you want to delete this tour?'),
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(context); // Close the dialog
               },
               child: Text('No'),
             ),
             TextButton(
               onPressed: () async {
-                await service.delete(tourId);
-                await getTours(); // Refresh the list after deletion
-                Navigator.pop(context);
+                try {
+                  await service.delete(tourId);
+                  await getTours(); // Refresh the list after deletion
+                  Navigator.pop(context); // Close the dialog
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Tour deleted successfully')),
+                  );
+                } catch (e) {
+                  Navigator.pop(context); // Close the dialog
+                  _showErrorDialog(context, e.toString());
+                }
               },
               child: Text('Yes'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Deletion Failed'),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the error dialog
+              },
+              child: Text('OK'),
             ),
           ],
         );

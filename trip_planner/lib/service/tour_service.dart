@@ -110,7 +110,22 @@ class TourService {
   }
 
   // Delete a tour by ID
+  Future<bool> isTourReferenced(int tourId) async {
+    final List<Map<String, dynamic>> trips = await db.query(
+      'trips',
+      where: 'tour_id = ?',
+      whereArgs: [tourId],
+      limit: 1,
+    );
+    return trips.isNotEmpty;
+  }
+
+  // Delete a tour by ID with reference check
   Future<void> delete(int id) async {
+    bool isReferenced = await isTourReferenced(id);
+    if (isReferenced) {
+      throw Exception('Cannot delete tour because it is associated with existing trips.');
+    }
     await db.delete("tours", where: "tour_id = ?", whereArgs: [id]);
   }
 }
