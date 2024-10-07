@@ -39,10 +39,25 @@ class _DetailScreenState extends State<DetailScreen> {
 
   void _loadComments() async {
     final data = await _commentService.getCommentsByTourId(widget.tour.tour_id);
+    final List<Comments> commentsWithUserDetails = [];
+
+    for (var comment in data) {
+      // Assuming you have a method to get user details by ID
+      final user = await _commentService.getUserById(comment.user_id); // Modify this as needed
+      commentsWithUserDetails.add(Comments(
+        comment.comment_id,
+        comment.content,
+        comment.tour_id,
+        comment.user_id,
+        fullName: user.full_name, // Assuming `full_name` is a property of your User model
+      ));
+    }
+
     setState(() {
-      _comments = data;
+      _comments = commentsWithUserDetails;
     });
   }
+
 
   Future<void> _addComment() async {
     if (_commentController.text.isNotEmpty) {
@@ -207,7 +222,7 @@ class _DetailScreenState extends State<DetailScreen> {
             final comment = _comments[index];
             return Card(
               child: ListTile(
-                title: Text('${widget.user.full_name}'),
+                title: Text(comment.fullName ?? widget.user.full_name), // Display full name
                 subtitle: Text(comment.content),
                 trailing: comment.user_id == widget.user.user_id
                     ? Row(

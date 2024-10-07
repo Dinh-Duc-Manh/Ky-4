@@ -59,7 +59,7 @@ class _AddExpensesScreenState extends State<AddExpensesScreen> {
             Text(
                 'Expense per Day: \$${dailyExpense.toStringAsFixed(2)}'), // Changed label
             Text('Amount: ${widget.amount}'), // Display actual amount
-            Text('Duration: $duration days'),
+            Text('Total Price Trip: ${widget.tourPrice}'),
             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),

@@ -11,9 +11,14 @@ import '../../model/Users.dart';
 class AddTripScreen extends StatefulWidget {
   final Users user;
   final Tours tour;
-  final int quantity;  // Add the quantity parameter
+  final int quantity; // Add the quantity parameter
 
-  const AddTripScreen({Key? key, required this.tour, required this.user, required this.quantity}) : super(key: key);
+  const AddTripScreen(
+      {Key? key,
+      required this.tour,
+      required this.user,
+      required this.quantity})
+      : super(key: key);
 
   @override
   _AddTripScreenState createState() => _AddTripScreenState();
@@ -47,7 +52,7 @@ class _AddTripScreenState extends State<AddTripScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Order Details'),
+        title: const Text('Order Trip'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -58,18 +63,16 @@ class _AddTripScreenState extends State<AddTripScreen> {
               widget.tour.tour_name,
               style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 10),
-
+            const SizedBox(height: 15),
             // Display Destination (nation) from the tour
             Text(
               "Destination: ${widget.tour.nation}",
               style: const TextStyle(fontSize: 18),
             ),
-            const SizedBox(height: 10),
-
-            Text("Price per trip: \$${widget.tour.tour_price.toStringAsFixed(2)}"),
-            const SizedBox(height: 20),
-
+            const SizedBox(height: 15),
+            Text(
+                "Number of tour days: ${widget.tour.time} Days"),
+            const SizedBox(height: 15),
             // Start Date Picker
             Row(
               children: [
@@ -87,8 +90,7 @@ class _AddTripScreenState extends State<AddTripScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
-
+            const SizedBox(height: 15),
             // End Date Display (automatically calculated)
             Row(
               children: [
@@ -102,11 +104,16 @@ class _AddTripScreenState extends State<AddTripScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 20),
-
+            const SizedBox(height: 15),
+            Text(
+                "Price tour: \$${widget.tour.tour_price.toStringAsFixed(2)}"),
+            const SizedBox(height: 15),
+            Text(
+                "Number of people going: ${widget.quantity}"),
+            const SizedBox(height: 15),
             // Total Price based on the number of trips selected
             Text(
-              "Total Price: \$${totalPrice.toStringAsFixed(2)}",  // Format the price
+              "Total Price: \$${totalPrice.toStringAsFixed(2)}", // Format the price
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
@@ -167,7 +174,7 @@ class _AddTripScreenState extends State<AddTripScreen> {
           tourPrice: widget.tour.tour_price,
         ),
       ),
-          (route) => false,
+      (route) => false,
     );
   }
 }

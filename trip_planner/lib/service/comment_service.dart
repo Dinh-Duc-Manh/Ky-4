@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:trip_planner/service/data.dart';
 import '../model/Comments.dart';
+import '../model/Users.dart';
 
 class CommentService {
   final Database db;
@@ -40,6 +41,20 @@ class CommentService {
         maps[i]['user_id'],
       );
     });
+  }
+
+  Future<Users> getUserById(int userId) async {
+    final List<Map<String, dynamic>> results = await db.query(
+      'users', // The name of your user table
+      where: 'user_id = ?',
+      whereArgs: [userId],
+    );
+
+    if (results.isNotEmpty) {
+      return Users.fromMap(results.first); // Assuming you have a fromMap method in your Users model
+    } else {
+      throw Exception('User not found');
+    }
   }
 
   // Remove a comment
